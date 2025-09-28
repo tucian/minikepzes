@@ -98,9 +98,10 @@
   <footer id="endMessage" style="display:none;">
     <p>🎉 Gratulálok, végignézted a mini képzést!  
     Nagyon örülök, hogy részt vettél benne, és remélem, sok hasznos tudást kaptál.  
-    Ha van észrevételed, kérdésed vagy szeretnél visszajelzést adni,  
-    válaszolj nyugodtan arra az e-mailre, amelyen keresztül eljutott hozzád ez a képzés.  
+    Ha van észrevételed, kérdésed, vagy szeretnél visszajelzést adni,  
+    nyugodtan írj a következő e-mail címre: <strong>tucian@tuciancardos.com</strong>  
     Köszönöm szépen még egyszer a figyelmedet! 🙏</p>
+    <button onclick="restartCourse()">↺ Vissza az elejére</button>
   </footer>
 
   <script>
@@ -145,6 +146,15 @@
         nextBtn.style.display = "none";
         endMessage.style.display = "block";
       }
+    }
+
+    function restartCourse() {
+      currentIndex = 0;
+      updatePlayer();
+      videoPlayer.style.display = "block";
+      prevBtn.style.display = "inline-block";
+      nextBtn.style.display = "inline-block";
+      endMessage.style.display = "none";
     }
 
     updatePlayer();
