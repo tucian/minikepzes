@@ -1,113 +1,154 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YouTube Öndiagnosztikai Teszt</title>
-<style>
-body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background: #f0f2f5; }
-header { background: #ff0000; color: #fff; text-align: center; padding: 20px; font-size: 24px; font-weight: bold; }
-.container { max-width: 800px; margin: 20px auto; padding: 20px; background: #fff; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
-.question { margin-bottom: 25px; padding: 20px; background: #fafafa; border-left: 5px solid #ff0000; border-radius: 8px; }
-.question h3 { margin-top: 0; }
-label { display: block; margin: 8px 0; cursor: pointer; padding: 8px; border-radius: 5px; transition: 0.2s; }
-label:hover { background: #ffefef; }
-input[type=radio] { margin-right: 10px; }
-button { padding: 12px 25px; font-size: 18px; border: none; background: #ff0000; color: #fff; border-radius: 8px; cursor: pointer; margin-top: 10px; }
-button:hover { background: #e60000; }
-#result { margin-top: 30px; padding: 25px; background: #ffe5e5; border-radius: 10px; font-size: 18px; font-weight: bold; }
-.progress-container { background: #ddd; border-radius: 25px; margin-bottom: 20px; height: 20px; }
-.progress-bar { height: 20px; background: #ff0000; width: 0%; border-radius: 25px; transition: width 0.3s; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini képzés – 3 videó</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    header {
+      max-width: 800px;
+      margin: 40px 20px 20px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #111827;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #374151;
+      line-height: 1.5;
+    }
+
+    iframe {
+      width: 100%;
+      max-width: 800px;
+      height: 450px;
+      border: none;
+      border-radius: 12px;
+      margin: 20px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .controls {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    button {
+      background-color: #2563eb;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:disabled {
+      background-color: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    button:hover:not(:disabled) {
+      background-color: #1e40af;
+    }
+
+    footer {
+      max-width: 800px;
+      margin: 0 20px 40px;
+      font-size: 0.95rem;
+      color: #374151;
+    }
+  </style>
 </head>
 <body>
-<header>YouTube Öndiagnosztikai Teszt</header>
-<div class="container">
-<div class="progress-container"><div class="progress-bar" id="progress"></div></div>
-<form id="quizForm"></form>
-<div id="result"></div>
-</div>
 
-<script>
-// Kérdések + pontok (ugyanaz mint előzőleg, rövidítve itt)
-const questions = [
-  {q:"1. Hány videót töltöttél fel az elmúlt 3 hónapban?", a:["0–1","2–3","4–6","7–10","10+"], p:[1,2,3,4,5]},
-  {q:"2. Van-e kidolgozott tartalomstratégiád?", a:["Nincs","Csak ötletelek néha","Van laza terv","Van heti/havi tartalomnaptár","Éves stratégia, tartalomcsomagokkal"], p:[1,2,3,4,5]},
-  {q:"3. Milyen minőségűek a videóid?", a:["Nagyon amatőr","Elfogadható, de hibás","Stabil, de nem profi","Profi hatású","Márkás, prémium"], p:[1,2,3,4,5]},
-  {q:"4. Hogyan választod a videótémákat?", a:["Ösztönösen","Amit eszembe jut","Néha kutatok","Rendszeres kulcsszó- és trendkutatás","Piaci kutatás, közönségkérdőív, A/B teszt"], p:[1,2,3,4,5]},
-  {q:"5. Mennyi ideig tart átlagosan egy videód elkészítése?", a:["Nincs rendszer, sokáig","1–2 nap","6–8 óra","3–5 óra","Kialakított gyártási folyamat, gyors"], p:[1,2,3,4,5]},
-  {q:"6. Használsz-e sablonokat, intro/outro, brand elemeket?", a:["Semmit","Néha","Van egy-kettő","Következetesen","Teljes brandcsomag"], p:[1,2,3,4,5]},
-  // ... a többi kérdés ugyanígy ...
-];
+  <header>
+    <h1>Köszönöm a bizalmadat!</h1>
+    <p>Szeretném átadni neked a 3 részes mini képzést.  
+    Nyomd meg a gombot, és nézd végig a videókat egymás után!</p>
+  </header>
 
-// Végső profilok
-const results = [
-  {min:30, max:55, text:"Explorer (Kezdő): Most ismerkedsz a YouTube világával. A célod: elkezdeni rendszeresen videózni és megérteni az alapokat."},
-  {min:56, max:80, text:"Builder (Alapozó): Már van csatornád és nézőid, de rendszert kell építened. A cél: tartalomstratégia, közönségismeret, alap monetizáció."},
-  {min:81, max:105, text:"Grower (Fejlődő): Van rendszered, növekszel, de hiányzik a stabil bevétel és a tudatos marketing. A cél: bevételi források elindítása."},
-  {min:106, max:130, text:"Monetizer (Monetizáló): Már pénzt keresel, de rendszert kell építened a skálázáshoz. A cél: funnel, email lista, több bevételi láb."},
-  {min:131, max:150, text:"Scaler (Skálázó): Stabil bevételed van, rendszerekkel és csapattal dolgozol. A cél: automatizálás, nagyobb közönség, új piacok."},
-];
+  <iframe id="videoPlayer" src="https://www.youtube.com/embed/jnfOXNEJTrs" allowfullscreen></iframe>
 
-// Kérdések megjelenítése
-const form = document.getElementById('quizForm');
-questions.forEach((q,i)=>{
-  const div = document.createElement('div');
-  div.className = 'question';
-  const h3 = document.createElement('h3');
-  h3.innerText = q.q;
-  div.appendChild(h3);
-  q.a.forEach((ans,j)=>{
-    const label = document.createElement('label');
-    const input = document.createElement('input');
-    input.type = 'radio';
-    input.name = 'q'+i;
-    input.value = q.p[j];
-    label.appendChild(input);
-    label.appendChild(document.createTextNode(' '+ans));
-    div.appendChild(label);
-  });
-  form.appendChild(div);
-});
-const btn = document.createElement('button');
-btn.type = 'button';
-btn.innerText = 'Kvíz befejezése';
-btn.onclick = calculate;
-form.appendChild(btn);
+  <div class="controls">
+    <button id="prevBtn" onclick="prevVideo()" disabled>⬅ Előző</button>
+    <button id="nextBtn" onclick="nextVideo()">Következő ➡</button>
+  </div>
 
-// Progress bar update
-const radios = document.querySelectorAll('input[type=radio]');
-radios.forEach(r=>{
-  r.addEventListener('change', updateProgress);
-});
-function updateProgress(){
-  let answered = 0;
-  for(let i=0;i<questions.length;i++){
-    if(document.querySelector('input[name="q'+i+'"]:checked')) answered++;
-  }
-  const perc = Math.round((answered/questions.length)*100);
-  document.getElementById('progress').style.width = perc+'%';
-}
+  <footer id="endMessage" style="display:none;">
+    <p>🎉 Gratulálok, végignézted a mini képzést!  
+    Nagyon örülök, hogy részt vettél benne, és remélem, sok hasznos tudást kaptál.  
+    Ha van észrevételed, kérdésed vagy szeretnél visszajelzést adni,  
+    válaszolj nyugodtan arra az e-mailre, amelyen keresztül eljutott hozzád ez a képzés.  
+    Köszönöm szépen még egyszer a figyelmedet! 🙏</p>
+  </footer>
 
-// Eredmény számítása
-function calculate(){
-  let total = 0;
-  for(let i=0;i<questions.length;i++){
-    const sel = document.querySelector('input[name="q'+i+'"]:checked');
-    if(sel){ total += parseInt(sel.value); }
-  }
-  let resText = "Nem adtál meg minden választ!";
-  if(total >=30){
-    for(let r of results){
-      if(total >= r.min && total <= r.max){
-        resText = r.text + `\nÖsszpontszám: ${total}`;
-        break;
+  <script>
+    const videos = [
+      "https://www.youtube.com/embed/jnfOXNEJTrs",
+      "https://www.youtube.com/embed/_o4gPvTjIOc",
+      "https://www.youtube.com/embed/-XRfl1GCOHE"
+    ];
+
+    let currentIndex = 0;
+
+    const videoPlayer = document.getElementById("videoPlayer");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const endMessage = document.getElementById("endMessage");
+
+    function updatePlayer() {
+      videoPlayer.src = videos[currentIndex];
+      prevBtn.disabled = currentIndex === 0;
+      if (currentIndex === videos.length - 1) {
+        nextBtn.textContent = "Befejezés ✔";
+      } else {
+        nextBtn.textContent = "Következő ➡";
       }
     }
-  }
-  document.getElementById('result').innerText = resText;
-  document.getElementById('result').scrollIntoView({behavior:'smooth'});
-}
-</script>
+
+    function prevVideo() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updatePlayer();
+      }
+    }
+
+    function nextVideo() {
+      if (currentIndex < videos.length - 1) {
+        currentIndex++;
+        updatePlayer();
+      } else {
+        // ha végére ért
+        videoPlayer.style.display = "none";
+        prevBtn.style.display = "none";
+        nextBtn.style.display = "none";
+        endMessage.style.display = "block";
+      }
+    }
+
+    updatePlayer();
+  </script>
+
 </body>
 </html>
